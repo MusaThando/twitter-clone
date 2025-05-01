@@ -13,7 +13,24 @@ const Post = ({ post }) => {
 
     const [comment,setComment] = useState("");
 	
-	const {data: authUser} = useQuery({queryKey:["authUser"]});
+    const {data: authUser, isLoading } = useQuery({
+      queryKey: ["authUser"],
+      queryFn: async () => {
+        try {
+          const res = await fetch("/api/auth/me");
+          const data = await res.json();
+  
+          if (data.error) return null;
+          if (!res.ok) {
+            throw new Error(data.error || "Something went wrong");
+          }
+          return data;
+          
+        } catch (error) {
+          throw new Error(error);
+        }
+      },retry: false,
+    });	
 	const queryClient = useQueryClient();
     const postOwner = post.user;
     const isLiked = false;
@@ -44,6 +61,7 @@ const Post = ({ post }) => {
 		},
 	});
 
+	
 	
 	const handleDeletePost = () => {
 		deletePost();

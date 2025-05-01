@@ -1,5 +1,4 @@
 import { useState,React } from "react";
-
 import Posts from "../../components/common/Posts";
 import CreatePost from "./CreatePost";
 

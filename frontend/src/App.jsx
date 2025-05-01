@@ -14,25 +14,25 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
-	const { data: authUser, isLoading } = useQuery({
-		// we use queryKey to give a unique name to our query and refer to it later
+
+	const {data: authUser, isLoading } = useQuery({
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
 				const res = await fetch("/api/auth/me");
 				const data = await res.json();
+
 				if (data.error) return null;
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
-				console.log("authUser is here:", data);
 				return data;
+				
 			} catch (error) {
 				throw new Error(error);
 			}
-		},
-		retry: false,
-	});
+		},retry: false,
+	});	
 
 	if (isLoading) {
 		return (
